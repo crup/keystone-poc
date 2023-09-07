@@ -147,22 +147,25 @@ var import_core4 = require("@keystone-6/core");
 var import_access4 = require("@keystone-6/core/access");
 var import_fields4 = require("@keystone-6/core/fields");
 var Make = (0, import_core4.list)({
-  // WARNING
-  //   for this starter project, anyone can create, query, update and delete anything
-  //   if you want to prevent random people on the internet from accessing your data,
-  //   you can find out more at https://keystonejs.com/docs/guides/auth-and-access-control
   access: import_access4.allowAll,
-  // this is the fields for our User list
   fields: {
-    // by adding isRequired, we enforce that every User should have a name
-    //   if no name is provided, an error will be displayed
     name: (0, import_fields4.text)({ validation: { isRequired: true } }),
-    // we can use this field to see what Posts this User has authored
-    //   more on that in the Post list below
-    model: (0, import_fields4.relationship)({ ref: "Model.make", many: true }),
+    model: (0, import_fields4.relationship)({
+      ref: "Model.make",
+      many: true,
+      ui: {
+        createView: {
+          fieldMode: "hidden"
+        }
+      }
+    }),
     createdAt: (0, import_fields4.timestamp)({
-      // this sets the timestamp to Date.now() when the user is first created
-      defaultValue: { kind: "now" }
+      defaultValue: { kind: "now" },
+      ui: {
+        createView: {
+          fieldMode: "hidden"
+        }
+      }
     })
   }
 });
@@ -226,7 +229,10 @@ var Variant = (0, import_core6.list)({
 var schemas_default = {
   User,
   Post,
-  Tag
+  Tag,
+  Make,
+  Model,
+  Variant
 };
 
 // src/auth/index.ts

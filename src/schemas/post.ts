@@ -45,7 +45,6 @@ export const Post = list({
           linkToItem: true,
           inlineConnect: true,
         },
-
         // a Post can only have one author
         //   this is the default, but we show it here for verbosity
         many: false,
