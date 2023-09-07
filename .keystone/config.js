@@ -149,14 +149,15 @@ var import_fields4 = require("@keystone-6/core/fields");
 var Make = (0, import_core4.list)({
   access: import_access4.allowAll,
   fields: {
-    name: (0, import_fields4.text)({ validation: { isRequired: true } }),
+    name: (0, import_fields4.text)({ validation: { isRequired: true }, isIndexed: "unique" }),
     model: (0, import_fields4.relationship)({
       ref: "Model.make",
       many: true,
       ui: {
         createView: {
           fieldMode: "hidden"
-        }
+        },
+        hideCreate: true
       }
     }),
     createdAt: (0, import_fields4.timestamp)({
@@ -164,6 +165,9 @@ var Make = (0, import_core4.list)({
       ui: {
         createView: {
           fieldMode: "hidden"
+        },
+        itemView: {
+          fieldMode: "read"
         }
       }
     })
@@ -184,15 +188,35 @@ var Model = (0, import_core5.list)({
   fields: {
     make: (0, import_fields5.relationship)({
       ref: "Make.model",
-      many: false
+      many: false,
+      ui: {
+        hideCreate: true,
+        linkToItem: false
+      }
     }),
     name: (0, import_fields5.text)({ validation: { isRequired: true } }),
     variant: (0, import_fields5.relationship)({
       ref: "Variant.model",
-      many: true
+      many: true,
+      ui: {
+        createView: {
+          fieldMode: "hidden"
+        },
+        itemView: {
+          fieldMode: "hidden"
+        }
+      }
     }),
     createdAt: (0, import_fields5.timestamp)({
-      defaultValue: { kind: "now" }
+      defaultValue: { kind: "now" },
+      ui: {
+        createView: {
+          fieldMode: "hidden"
+        },
+        itemView: {
+          fieldMode: "read"
+        }
+      }
     })
   }
 });

@@ -39,7 +39,7 @@ model Tag {
 
 model Make {
   id                String    @id @default(cuid())
-  name              String    @default("")
+  name              String    @unique @default("")
   model             Model[]   @relation("Model_make")
   createdAt         DateTime? @default(now())
   from_Variant_make Variant[] @relation("Variant_make")

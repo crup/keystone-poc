@@ -18,15 +18,35 @@ export const Model = list({
     fields: {
       make: relationship({
         ref: 'Make.model',
-        many: false
+        many: false,
+        ui: {
+            hideCreate: true,
+            linkToItem: false
+        }
       }),
       name: text({ validation: { isRequired: true } }),
       variant: relationship({
         ref: 'Variant.model',
-        many: true
+        many: true,
+        ui: {
+            createView: {
+                fieldMode: "hidden"
+            },
+            itemView: {
+                fieldMode: "hidden"
+            }
+        }
       }),
       createdAt: timestamp({
-        defaultValue: { kind: 'now' },
+        defaultValue: { kind: "now" },
+        ui: {
+              createView: {
+                  fieldMode: "hidden"
+              },
+              itemView: {
+                fieldMode: "read"
+              }
+          },
       }),
     },
   })
