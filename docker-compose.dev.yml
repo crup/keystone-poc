@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  cms:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: cms
+    stdin_open: true
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    networks: 
+      - api
+
+  mariadb:
+    image: mariadb:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cms
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks: 
+      - api
+networks: 
+  api: 
+    driver: bridge
