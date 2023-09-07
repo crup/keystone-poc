@@ -8,11 +8,11 @@
 import { config } from '@keystone-6/core';
 
 // to keep this file tidy, we define our schema in a different file
-import { lists } from './schema';
+import schema from './src/schemas';
 
 // authentication is configured separately here too, but you might move this elsewhere
 // when you write your list-level access control functions, as they typically rely on session data
-import { withAuth, session } from './auth';
+import { withAuth, session } from './src/auth';
 
 export default withAuth(
   config({
@@ -23,7 +23,7 @@ export default withAuth(
       provider: 'sqlite',
       url: 'file:./keystone.db',
     },
-    lists,
+    lists: schema,
     session,
   })
 );

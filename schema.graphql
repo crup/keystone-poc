@@ -254,6 +254,206 @@ input TagCreateInput {
   posts: PostRelateToManyForCreateInput
 }
 
+type Make {
+  id: ID!
+  name: String
+  model(where: ModelWhereInput! = {}, orderBy: [ModelOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ModelWhereUniqueInput): [Model!]
+  modelCount(where: ModelWhereInput! = {}): Int
+  createdAt: DateTime
+}
+
+input MakeWhereUniqueInput {
+  id: ID
+}
+
+input MakeWhereInput {
+  AND: [MakeWhereInput!]
+  OR: [MakeWhereInput!]
+  NOT: [MakeWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  model: ModelManyRelationFilter
+  createdAt: DateTimeNullableFilter
+}
+
+input ModelManyRelationFilter {
+  every: ModelWhereInput
+  some: ModelWhereInput
+  none: ModelWhereInput
+}
+
+input MakeOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  createdAt: OrderDirection
+}
+
+input MakeUpdateInput {
+  name: String
+  model: ModelRelateToManyForUpdateInput
+  createdAt: DateTime
+}
+
+input ModelRelateToManyForUpdateInput {
+  disconnect: [ModelWhereUniqueInput!]
+  set: [ModelWhereUniqueInput!]
+  create: [ModelCreateInput!]
+  connect: [ModelWhereUniqueInput!]
+}
+
+input MakeUpdateArgs {
+  where: MakeWhereUniqueInput!
+  data: MakeUpdateInput!
+}
+
+input MakeCreateInput {
+  name: String
+  model: ModelRelateToManyForCreateInput
+  createdAt: DateTime
+}
+
+input ModelRelateToManyForCreateInput {
+  create: [ModelCreateInput!]
+  connect: [ModelWhereUniqueInput!]
+}
+
+type Model {
+  id: ID!
+  make: Make
+  name: String
+  variant(where: VariantWhereInput! = {}, orderBy: [VariantOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: VariantWhereUniqueInput): [Variant!]
+  variantCount(where: VariantWhereInput! = {}): Int
+  createdAt: DateTime
+}
+
+input ModelWhereUniqueInput {
+  id: ID
+}
+
+input ModelWhereInput {
+  AND: [ModelWhereInput!]
+  OR: [ModelWhereInput!]
+  NOT: [ModelWhereInput!]
+  id: IDFilter
+  make: MakeWhereInput
+  name: StringFilter
+  variant: VariantManyRelationFilter
+  createdAt: DateTimeNullableFilter
+}
+
+input VariantManyRelationFilter {
+  every: VariantWhereInput
+  some: VariantWhereInput
+  none: VariantWhereInput
+}
+
+input ModelOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  createdAt: OrderDirection
+}
+
+input ModelUpdateInput {
+  make: MakeRelateToOneForUpdateInput
+  name: String
+  variant: VariantRelateToManyForUpdateInput
+  createdAt: DateTime
+}
+
+input MakeRelateToOneForUpdateInput {
+  create: MakeCreateInput
+  connect: MakeWhereUniqueInput
+  disconnect: Boolean
+}
+
+input VariantRelateToManyForUpdateInput {
+  disconnect: [VariantWhereUniqueInput!]
+  set: [VariantWhereUniqueInput!]
+  create: [VariantCreateInput!]
+  connect: [VariantWhereUniqueInput!]
+}
+
+input ModelUpdateArgs {
+  where: ModelWhereUniqueInput!
+  data: ModelUpdateInput!
+}
+
+input ModelCreateInput {
+  make: MakeRelateToOneForCreateInput
+  name: String
+  variant: VariantRelateToManyForCreateInput
+  createdAt: DateTime
+}
+
+input MakeRelateToOneForCreateInput {
+  create: MakeCreateInput
+  connect: MakeWhereUniqueInput
+}
+
+input VariantRelateToManyForCreateInput {
+  create: [VariantCreateInput!]
+  connect: [VariantWhereUniqueInput!]
+}
+
+type Variant {
+  id: ID!
+  make: Make
+  model: Model
+  name: String
+  createdAt: DateTime
+}
+
+input VariantWhereUniqueInput {
+  id: ID
+}
+
+input VariantWhereInput {
+  AND: [VariantWhereInput!]
+  OR: [VariantWhereInput!]
+  NOT: [VariantWhereInput!]
+  id: IDFilter
+  make: MakeWhereInput
+  model: ModelWhereInput
+  name: StringFilter
+  createdAt: DateTimeNullableFilter
+}
+
+input VariantOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  createdAt: OrderDirection
+}
+
+input VariantUpdateInput {
+  make: MakeRelateToOneForUpdateInput
+  model: ModelRelateToOneForUpdateInput
+  name: String
+  createdAt: DateTime
+}
+
+input ModelRelateToOneForUpdateInput {
+  create: ModelCreateInput
+  connect: ModelWhereUniqueInput
+  disconnect: Boolean
+}
+
+input VariantUpdateArgs {
+  where: VariantWhereUniqueInput!
+  data: VariantUpdateInput!
+}
+
+input VariantCreateInput {
+  make: MakeRelateToOneForCreateInput
+  model: ModelRelateToOneForCreateInput
+  name: String
+  createdAt: DateTime
+}
+
+input ModelRelateToOneForCreateInput {
+  create: ModelCreateInput
+  connect: ModelWhereUniqueInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -278,6 +478,24 @@ type Mutation {
   updateTags(data: [TagUpdateArgs!]!): [Tag]
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createMake(data: MakeCreateInput!): Make
+  createMakes(data: [MakeCreateInput!]!): [Make]
+  updateMake(where: MakeWhereUniqueInput!, data: MakeUpdateInput!): Make
+  updateMakes(data: [MakeUpdateArgs!]!): [Make]
+  deleteMake(where: MakeWhereUniqueInput!): Make
+  deleteMakes(where: [MakeWhereUniqueInput!]!): [Make]
+  createModel(data: ModelCreateInput!): Model
+  createModels(data: [ModelCreateInput!]!): [Model]
+  updateModel(where: ModelWhereUniqueInput!, data: ModelUpdateInput!): Model
+  updateModels(data: [ModelUpdateArgs!]!): [Model]
+  deleteModel(where: ModelWhereUniqueInput!): Model
+  deleteModels(where: [ModelWhereUniqueInput!]!): [Model]
+  createVariant(data: VariantCreateInput!): Variant
+  createVariants(data: [VariantCreateInput!]!): [Variant]
+  updateVariant(where: VariantWhereUniqueInput!, data: VariantUpdateInput!): Variant
+  updateVariants(data: [VariantUpdateArgs!]!): [Variant]
+  deleteVariant(where: VariantWhereUniqueInput!): Variant
+  deleteVariants(where: [VariantWhereUniqueInput!]!): [Variant]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -310,6 +528,15 @@ type Query {
   tags(where: TagWhereInput! = {}, orderBy: [TagOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TagWhereUniqueInput): [Tag!]
   tag(where: TagWhereUniqueInput!): Tag
   tagsCount(where: TagWhereInput! = {}): Int
+  makes(where: MakeWhereInput! = {}, orderBy: [MakeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: MakeWhereUniqueInput): [Make!]
+  make(where: MakeWhereUniqueInput!): Make
+  makesCount(where: MakeWhereInput! = {}): Int
+  models(where: ModelWhereInput! = {}, orderBy: [ModelOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ModelWhereUniqueInput): [Model!]
+  model(where: ModelWhereUniqueInput!): Model
+  modelsCount(where: ModelWhereInput! = {}): Int
+  variants(where: VariantWhereInput! = {}, orderBy: [VariantOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: VariantWhereUniqueInput): [Variant!]
+  variant(where: VariantWhereUniqueInput!): Variant
+  variantsCount(where: VariantWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

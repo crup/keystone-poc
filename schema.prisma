@@ -36,3 +36,35 @@ model Tag {
   name  String @default("")
   posts Post[] @relation("Post_tags")
 }
+
+model Make {
+  id                String    @id @default(cuid())
+  name              String    @default("")
+  model             Model[]   @relation("Model_make")
+  createdAt         DateTime? @default(now())
+  from_Variant_make Variant[] @relation("Variant_make")
+}
+
+model Model {
+  id        String    @id @default(cuid())
+  make      Make?     @relation("Model_make", fields: [makeId], references: [id])
+  makeId    String?   @map("make")
+  name      String    @default("")
+  variant   Variant[] @relation("Variant_model")
+  createdAt DateTime? @default(now())
+
+  @@index([makeId])
+}
+
+model Variant {
+  id        String    @id @default(cuid())
+  make      Make?     @relation("Variant_make", fields: [makeId], references: [id])
+  makeId    String?   @map("make")
+  model     Model?    @relation("Variant_model", fields: [modelId], references: [id])
+  modelId   String?   @map("model")
+  name      String    @default("")
+  createdAt DateTime? @default(now())
+
+  @@index([makeId])
+  @@index([modelId])
+}
