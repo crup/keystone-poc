@@ -63,6 +63,7 @@ model Variant {
   model     Model?    @relation("Variant_model", fields: [modelId], references: [id])
   modelId   String?   @map("model")
   name      String    @default("")
+  rating    Int?
   createdAt DateTime? @default(now())
 
   @@index([makeId])

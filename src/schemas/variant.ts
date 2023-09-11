@@ -6,6 +6,7 @@ import {
     password,
     timestamp,
   } from '@keystone-6/core/fields';
+import { stars } from '../fields/2-star-field';
 
 export const Variant = list({
     // WARNING
@@ -22,12 +23,17 @@ export const Variant = list({
       }),
       model: relationship({
         ref: 'Model.variant',
-        many: false,
+        many: false
       }),
       name: text({ validation: { isRequired: true } }),
+      rating: stars({
+        ui: {
+          description: 'A star rating, with a scale of 5',
+        },
+      }),
       createdAt: timestamp({
         // this sets the timestamp to Date.now() when the user is first created
         defaultValue: { kind: 'now' },
       }),
-    },
+    }
   })

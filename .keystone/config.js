@@ -23,7 +23,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core7 = require("@keystone-6/core");
+var import_core8 = require("@keystone-6/core");
 
 // src/schemas/user.ts
 var import_core = require("@keystone-6/core");
@@ -222,10 +222,77 @@ var Model = (0, import_core5.list)({
 });
 
 // src/schemas/variant.ts
-var import_core6 = require("@keystone-6/core");
+var import_core7 = require("@keystone-6/core");
 var import_access6 = require("@keystone-6/core/access");
 var import_fields6 = require("@keystone-6/core/fields");
-var Variant = (0, import_core6.list)({
+
+// src/fields/2-star-field/index.ts
+var import_types = require("@keystone-6/core/types");
+var import_core6 = require("@keystone-6/core");
+var stars = ({
+  isIndexed,
+  maxStars = 5,
+  ...config2
+} = {}) => (meta) => (0, import_types.fieldType)({
+  // this configures what data is stored in the database
+  kind: "scalar",
+  mode: "optional",
+  scalar: "Int",
+  index: isIndexed === true ? "index" : isIndexed || void 0
+})({
+  // this passes through all of the common configuration like access control and etc.
+  ...config2,
+  hooks: {
+    ...config2.hooks,
+    // We use the `validateInput` hook to ensure that the user doesn't set an out of range value.
+    // This hook is the key difference on the backend between the stars field type and the integer field type.
+    async validateInput(args) {
+      const val = args.resolvedData[meta.fieldKey];
+      if (!(val == null || val >= 0 && val <= maxStars)) {
+        args.addValidationError(`The value must be within the range of 0-${maxStars}`);
+      }
+      await config2.hooks?.validateInput?.(args);
+    }
+  },
+  // all of these inputs are optional if they don't make sense for a particular field type
+  input: {
+    create: {
+      arg: import_core6.graphql.arg({ type: import_core6.graphql.Int }),
+      // this field type doesn't need to do anything special
+      // but field types can specify resolvers for inputs like they can for their output GraphQL field
+      // this function can be omitted, it is here purely to show how you could change it
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      resolve(val, context) {
+        if (val === null) {
+          return null;
+        }
+        if (val === void 0) {
+          return void 0;
+        }
+        return val;
+      }
+    },
+    update: { arg: import_core6.graphql.arg({ type: import_core6.graphql.Int }) },
+    orderBy: { arg: import_core6.graphql.arg({ type: import_types.orderDirectionEnum }) }
+  },
+  // this
+  output: import_core6.graphql.field({
+    type: import_core6.graphql.Int,
+    // like the input resolvers, providing the resolver is unnecessary if you're just returning the value
+    // it is shown here to show what you could do
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    resolve({ value, item }, args, context, info) {
+      return value;
+    }
+  }),
+  views: "./src/fields/2-star-field/views",
+  getAdminMeta() {
+    return { maxStars };
+  }
+});
+
+// src/schemas/variant.ts
+var Variant = (0, import_core7.list)({
   // WARNING
   //   for this starter project, anyone can create, query, update and delete anything
   //   if you want to prevent random people on the internet from accessing your data,
@@ -242,6 +309,11 @@ var Variant = (0, import_core6.list)({
       many: false
     }),
     name: (0, import_fields6.text)({ validation: { isRequired: true } }),
+    rating: stars({
+      ui: {
+        description: "A star rating, with a scale of 5"
+      }
+    }),
     createdAt: (0, import_fields6.timestamp)({
       // this sets the timestamp to Date.now() when the user is first created
       defaultValue: { kind: "now" }
@@ -294,7 +366,7 @@ var session = (0, import_session.statelessSessions)({
 
 // keystone.ts
 var keystone_default = withAuth(
-  (0, import_core7.config)({
+  (0, import_core8.config)({
     db: {
       // we're using sqlite for the fastest startup experience
       //   for more information on what database might be appropriate for you

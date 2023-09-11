@@ -401,6 +401,7 @@ type Variant {
   make: Make
   model: Model
   name: String
+  rating: Int
   createdAt: DateTime
 }
 
@@ -422,6 +423,7 @@ input VariantWhereInput {
 input VariantOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  rating: OrderDirection
   createdAt: OrderDirection
 }
 
@@ -429,6 +431,7 @@ input VariantUpdateInput {
   make: MakeRelateToOneForUpdateInput
   model: ModelRelateToOneForUpdateInput
   name: String
+  rating: Int
   createdAt: DateTime
 }
 
@@ -447,6 +450,7 @@ input VariantCreateInput {
   make: MakeRelateToOneForCreateInput
   model: ModelRelateToOneForCreateInput
   name: String
+  rating: Int
   createdAt: DateTime
 }
 
